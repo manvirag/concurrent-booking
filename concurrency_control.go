@@ -262,7 +262,7 @@ func BookMyShowTimeoutImp(ctx context.Context, db *sql.DB, redisClient *redis.Cl
 	defer tx.Rollback()
 
 	placeholders := generatePlaceholders(len(seatIDs))
-	checkQuery := fmt.Sprintf("SELECT COUNT(*) FROM seats WHERE id IN (%s) AND (is_reserved = 0 OR (is_reserved = 1 AND payment_status = 'FAILED'))", placeholders)
+	checkQuery := fmt.Sprintf("SELECT COUNT(*) FROM seats WHERE id IN (%s) AND (is_reserved = 0 OR (is_reserved = 1 AND payment_status = 'FAILED')) FOR UPDATE", placeholders)
 	checkArgs := sliceToInterface(seatIDs)
 
 	log.Printf("[Booking] Checking seat availability - UserID: %d", userID)
