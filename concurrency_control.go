@@ -253,7 +253,7 @@ func BookMyShowTimeoutImp(ctx context.Context, db *sql.DB, redisClient *redis.Cl
 	log.Printf("[Booking] Acquired Redis lock - UserID: %d, LockKey: %s", userID, lockKey)
 
 	tx, err := db.BeginTx(ctx, &sql.TxOptions{
-		Isolation: sql.LevelReadCommitted,
+		Isolation: sql.LevelSerializable,
 	})
 	if err != nil {
 		log.Printf("[Booking] Failed to begin transaction - UserID: %d, Error: %v", userID, err)
